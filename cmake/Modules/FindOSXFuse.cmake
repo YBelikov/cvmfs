@@ -15,6 +15,9 @@ FIND_PATH (MACOS_FUSE_INCLUDE_DIR fuse.h
         /usr/local/include/osxfuse
 )
 
+# currently set it manually to include necessary directories
+SET(MACOS_FUSE_INCLUDE_DIR ${MACOS_FUSE_INCLUDE_DIR} /usr/local/include/fuse /usr/local/include)
+
 # find FUSE-T lib as the primary lib
 SET(MACOS_FUSE_LIB_NAMES fuse-t)
 FIND_LIBRARY(MACOS_FUSE_LIBRARY 
