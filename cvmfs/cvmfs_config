@@ -469,9 +469,12 @@ cvmfs_chksetup() {
     fi
   fi
 
+  # Check that all required components for fuse-t are presented
+  check_fuse_t_installation
+  is_fuse_t_installed=$?
   # Check that /dev/fuse is read/writable from cvmfs user
-  if [ x"$sys_arch" = x"Darwin" ] && [ ! -d /Library/Filesystems/macfuse.fs ]; then
-    echo "Error: macFUSE is missing."
+  if [ x"$sys_arch" = x"Darwin" ] && [ $is_fuse_t_installed -ne 0 ] && [ ! -d /Library/Filesystems/macfuse.fs ]; then
+    echo "Error: search for FUSE-T or macFUSE failed."
     num_errors=$(($num_errors+1))
   fi
   check_dev_fuse
@@ -1756,6 +1759,29 @@ check_cvmfs_user() {
   esac
 }
 
+check_fuse_t_installation() {
+  # Ensure script is running on Darwin (macOS)
+  if [ "$sys_arc" != "Darwin" ]; then
+    echo "Error: Unsupported system architecture."
+    return 1
+  fi
+
+  local product="fuse-t"
+  local nfsV4ServerLink="/usr/local/bin/go-nfsv4"
+  local dylibPath="/usr/local/lib/lib${product}.dylib"
+  local staticLibPath="/usr/local/lib/lib${product}*.a"
+
+  # Check for existence of required files and links
+  local paths=("$nfsV4ServerLink" "$dylibPath" "$staticLibPath")
+  for path in "${paths[@]}"; do
+    if [ ! -e "$path" ]; then
+      echo "Error: Missing required file or directory: $path"
+      return 1
+    fi
+  done
+
+  return 0
+}
 
 check_dev_fuse() {
   local charDevice
@@ -1774,7 +1800,9 @@ check_dev_fuse() {
   esac
 
   return_code=0
-
+  if [ $is_fuse_t_installed -eq 0 ]; then
+        return $return_code
+  fi
   if [ ! -c $charDevice ]; then
     if [ x"$sys_arch" = x"Linux" ]; then
       echo "Error: character device $charDevice does not exist"

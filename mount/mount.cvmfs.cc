@@ -68,11 +68,30 @@ static string MkFqrn(const string &repository) {
   return repository;
 }
 
+static bool IsFuseTInstalled() {
+  string fuseTComponentsPaths[] = { "/usr/local/bin/go-nfsv4", 
+                                          "/usr/local/lib/libfuse-t.dylib",
+                                           "/usr/local/lib/libfuse-t.a" };
+  const int pathsNumber = sizeof(fuseTComponentsPaths) / sizeof(fuseTComponentsPaths[0]);
+  platform_stat64 info;
+  for (int idx = 0; idx < pathsNumber; ++idx) {
+    bzero(&info, sizeof(platform_stat64));
+    int retval = platform_lstat(fuseTComponentsPaths[idx].c_str(), &info);
+    if ((retval != 0) || !S_ISREG(info.st_mode) != 0) {
+      return false;
+    }
+  }
+  return true;
+}
 
 static bool CheckFuse() {
   string fuse_device;
   int retval;
 #ifdef __APPLE__
+  if (IsFuseTInstalled()) {
+    LogCvmfs(kLogCvmfs, kLogStdout, "FUSE-T installed");
+    return true;
+  }
   retval = system("/Library/Filesystems/macfuse.fs/Contents/Resources/"
                   "load_macfuse");
   if (retval != 0) {
