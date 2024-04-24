@@ -152,7 +152,7 @@ void SyncUnionOverlayfs::MaskFileHardlinks(SharedPtr<SyncItem> entry) const {
 
 void SyncUnionOverlayfs::Traverse() {
   assert(this->IsInitialized());
-
+  
   FileSystemTraversal<SyncUnionOverlayfs> traversal(this, scratch_path(), true);
 
   traversal.fn_enter_dir = &SyncUnionOverlayfs::EnterDirectory;

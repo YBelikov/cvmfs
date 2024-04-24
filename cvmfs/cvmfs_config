@@ -469,13 +469,14 @@ cvmfs_chksetup() {
     fi
   fi
 
-  # Check that all required components for fuse-t are presented
-  check_fuse_t_installation
-  is_fuse_t_installed=$?
   # Check that /dev/fuse is read/writable from cvmfs user
-  if [ x"$sys_arch" = x"Darwin" ] && [ $is_fuse_t_installed -ne 0 ] && [ ! -d /Library/Filesystems/macfuse.fs ]; then
-    echo "Error: search for FUSE-T or macFUSE failed."
-    num_errors=$(($num_errors+1))
+  if [ x"$sys_arch" = x"Darwin" ]; then
+    # Check that all required components for fuse-t are presented
+    check_fuse_t_installation
+    if [ $? -ne 0 ]; then
+      echo "Error: search for FUSE-T failed."
+      num_errors=$(($num_errors+1))
+    fi
   fi
   check_dev_fuse
   exit_code=$?
@@ -1792,24 +1793,18 @@ check_dev_fuse() {
       charDevice=/dev/fuse ;;
 
     Darwin )
-      charDevice=/dev/macfuse0 ;;
-
+      # Since we rely on FUSE-T now the check for /dev/<device_name> isn't necessary
+      return 0 ;;
     * )
      echo "Architecture $sys_arch is not supported"
      exit 1 ;;
   esac
 
   return_code=0
-  if [ $is_fuse_t_installed -eq 0 ]; then
-        return $return_code
-  fi
   if [ ! -c $charDevice ]; then
     if [ x"$sys_arch" = x"Linux" ]; then
       echo "Error: character device $charDevice does not exist"
       return_code=$(($return_code+1))
-    elif [ x"$sys_arch" = x"Darwin" ]; then
-      echo -n "Warning: character device $charDevice does not exist. "
-      echo "Please make sure that macFUSE is installed."
     fi
   else
     if ! runascvmfsuser "test -r $charDevice"; then
