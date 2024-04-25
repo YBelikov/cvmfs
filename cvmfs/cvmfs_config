@@ -474,7 +474,7 @@ cvmfs_chksetup() {
     # Check that all required components for fuse-t are presented
     check_fuse_t_installation
     if [ $? -ne 0 ]; then
-      echo "Error: search for FUSE-T failed."
+      echo "Error: FUSE-T is not installed."
       num_errors=$(($num_errors+1))
     fi
   fi
