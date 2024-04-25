@@ -1760,13 +1760,8 @@ check_cvmfs_user() {
   esac
 }
 
+# Expect to be ran only on macOS
 check_fuse_t_installation() {
-  # Ensure script is running on Darwin (macOS)
-  if [ x"$sys_arch" != x"Darwin" ]; then
-    echo "Error. Arch: $sys_arch is an unsupported system architecture. "
-    return 1
-  fi
-
   local product="fuse-t"
   local nfsV4ServerLink="/usr/local/bin/go-nfsv4"
   local dylibPath="/usr/local/lib/lib${product}.dylib"
@@ -1780,7 +1775,6 @@ check_fuse_t_installation() {
       return 1
     fi
   done
-
   return 0
 }
 
@@ -1793,7 +1787,7 @@ check_dev_fuse() {
       charDevice=/dev/fuse ;;
 
     Darwin )
-      # Since we rely on FUSE-T now the check for /dev/<device_name> isn't necessary
+      # Since we rely on user-space FUSE-T now the check for /dev/<device_name> isn't necessary
       return 0 ;;
     * )
      echo "Architecture $sys_arch is not supported"
