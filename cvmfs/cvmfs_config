@@ -1760,7 +1760,7 @@ check_cvmfs_user() {
   esac
 }
 
-# Expect to be ran only on macOS
+# Expected to be ran only on macOS
 check_fuse_t_installation() {
   local product="fuse-t"
   local nfsV4ServerLink="/usr/local/bin/go-nfsv4"

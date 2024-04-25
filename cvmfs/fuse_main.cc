@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
             debug = true;
           }
 
-          if (HasPrefix(mount_options[i], "l", false /*ign_case*/)) {
+          if (HasPrefix(mount_options[i], "libfuse", false /*ign_case*/)) {
             std::vector<std::string> t = SplitString(mount_options[i], '=');
             enforce_libfuse = String2Uint64(t[1]);
             if (debug) {
@@ -103,11 +103,11 @@ int main(int argc, char **argv) {
   }
   if ((enforce_libfuse == 0) || (enforce_libfuse == 2)) {
     library_paths.push_back(local_lib_path + libname_fuse2);
- //   library_paths.push_back("/usr/lib/"   + libname_fuse2);
-//    library_paths.push_back("/usr/lib64/" + libname_fuse2);
-//#ifdef __APPLE__
+   library_paths.push_back("/usr/lib/"   + libname_fuse2);
+   library_paths.push_back("/usr/lib64/" + libname_fuse2);
+#ifdef __APPLE__
     library_paths.push_back("/usr/local/lib/" + libname_fuse2);
-//#endif
+#endif
   }
 
   void *library_handle;

@@ -5,6 +5,7 @@
 # MACOS_FUSE_FOUND       - True if either FUSE-T is found.
 
 # find includes
+# NO_DEFAULT_PATH to avoid collisions with /Library/Frameworks/fuse_t.framework/Headers
 FIND_PATH (MACOS_FUSE_INCLUDE_DIR fuse.h
         /usr/include
         /usr/local/include
@@ -33,12 +34,12 @@ ENDIF (MACOS_FUSE_INCLUDE_DIR AND MACOS_FUSE_LIBRARY)
 # let world know the results
 IF (MACOS_FUSE_FOUND)
         IF (NOT MACOS_FUSE_FIND_QUIETLY)
-                MESSAGE(STATUS "Found FUSE library for macOS: ${MACOS_FUSE_LIBRARY}. Include dir: ${MACOS_FUSE_INCLUDE_DIR}")
+                MESSAGE(STATUS "Found FUSE-T library for macOS: ${MACOS_FUSE_LIBRARY}. fuse.h include directory: ${MACOS_FUSE_INCLUDE_DIR}")
         ENDIF (NOT MACOS_FUSE_FIND_QUIETLY)
 ELSE (MACOS_FUSE_FOUND)
         IF (MACOS_FUSE_FIND_QUIETLY)
-                MESSAGE(STATUS "Looked for FUSE libraries named ${MACOS_FUSE_LIB_NAMES}.")
-                MESSAGE(FATAL_ERROR "Could NOT find FUSE library")
+                MESSAGE(STATUS "Looked for FUSE-T library named ${MACOS_FUSE_LIB_NAMES}.")
+                MESSAGE(FATAL_ERROR "Could NOT find FUSE-T library")
         ENDIF (MACOS_FUSE_FIND_QUIETLY)
 ENDIF (MACOS_FUSE_FOUND)
 
