@@ -1762,8 +1762,8 @@ check_cvmfs_user() {
 
 check_fuse_t_installation() {
   # Ensure script is running on Darwin (macOS)
-  if [ x"$sys_arc" != x"Darwin" ]; then
-    echo "Error. Arch: $sys_arc is an unsupported system architecture. "
+  if [ x"$sys_arch" != x"Darwin" ]; then
+    echo "Error. Arch: $sys_arch is an unsupported system architecture. "
     return 1
   fi
 
