@@ -1770,7 +1770,7 @@ check_fuse_t_installation() {
   local product="fuse-t"
   local nfsV4ServerLink="/usr/local/bin/go-nfsv4"
   local dylibPath="/usr/local/lib/lib${product}.dylib"
-  local staticLibPath="/usr/local/lib/lib${product}*.a"
+  local staticLibPath="/usr/local/lib/lib${product}.a"
 
   # Check for existence of required files and links
   local paths=("$nfsV4ServerLink" "$dylibPath" "$staticLibPath")
