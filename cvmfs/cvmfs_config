@@ -61,7 +61,7 @@ case $sys_arch in
 
   Darwin )
     fuser="/usr/bin/fuser"
-    fuse_fs_type="macfuse"
+    fuse_fs_type="nfs"
     ;;
 
   * )
@@ -1569,8 +1569,12 @@ waitfor() {
 
 list_mounts() {
   # Matches lines that begin with cvmfs2 or /usr/bin/cvmfs2 (/bin/cvmfs2,
-  # /usr/local/bin/cvmfs2)
-  mount -t $fuse_fs_type | grep "^\(/[^[:space:]]*/\)\?cvmfs2[[:space:]]"
+  # /usr/local/bin/cvmfs2) on Linux or with fuse-t
+  if [ x"$sys_arch" = x"Darwin" ]; then
+    mount -t $fuse_fs_type | grep "fuse-t"
+  else
+    mount -t $fuse_fs_type | grep "^\(/[^[:space:]]*/\)\?cvmfs2[[:space:]]"
+  fi
 }
 
 
