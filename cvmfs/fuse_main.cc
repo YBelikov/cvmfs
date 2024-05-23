@@ -114,6 +114,8 @@ int main(int argc, char **argv) {
   std::vector<std::string>::const_iterator i    = library_paths.begin();
   std::vector<std::string>::const_iterator iend = library_paths.end();
   for (; i != iend; ++i) {
+    LogCvmfs(kLogCvmfs, kLogDebug | kLogStdout, "Debug: trying library %s\n",
+                 i->c_str());
     library_handle = dlopen(i->c_str(), RTLD_NOW | RTLD_LOCAL);
     if (library_handle != NULL) {
       if (debug) {

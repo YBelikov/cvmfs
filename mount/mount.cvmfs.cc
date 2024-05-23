@@ -92,17 +92,15 @@ static bool CheckFuse() {
   }
   return is_fuse_t_installed;
 #else
-  fuse_device = "/dev/fuse";
-#endif
-  string fuse_device;
-  int retval;
+  string fuse_device = "/dev/fuse";
   platform_stat64 info;
-  retval = platform_stat(fuse_device.c_str(), &info);
+  int retval = platform_stat(fuse_device.c_str(), &info);
   if ((retval != 0) || !S_ISCHR(info.st_mode)) {
     LogCvmfs(kLogCvmfs, kLogStderr, "Fuse not loaded");
     return false;
   }
   return true;
+#endif
 }
 
 

@@ -6,11 +6,8 @@
 
 # find includes
 # NO_DEFAULT_PATH to avoid collisions with /Library/Frameworks/fuse_t.framework/Headers
-FIND_PATH (MACOS_FUSE_INCLUDE_DIR fuse.h
-        /usr/include
-        /usr/local/include
-        /usr/local/include/fuse NO_DEFAULT_PATH
-)
+SET (MACOS_FUSE_INCLUDE_DIR /usr/local/include)
+
 
 # find FUSE-T lib as the primary lib
 SET(MACOS_FUSE_LIB_NAMES fuse-t)
